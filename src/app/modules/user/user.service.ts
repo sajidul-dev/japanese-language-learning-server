@@ -1,9 +1,30 @@
 import { IUser } from "./user.interface";
 import { User } from "./user.model";
+import bcrypt from "bcrypt";
+import config from "../../../config";
 
-const getStudents = async (): Promise<IUser[] | null> => {
+const createUser = async (user: IUser): Promise<IUser | null> => {
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  const newUser = await User.create(user);
+  return newUser;
+};
+
+const getUsers = async (): Promise<IUser[] | null> => {
   const users = await User.find();
   return users;
 };
 
-export const UserService = { getStudents };
+const updateUser = async (
+  id: string,
+  payload: Partial<IUser>,
+): Promise<IUser | null> => {
+  const user = await User.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return user;
+};
+
+export const UserService = { createUser, getUsers, updateUser };
