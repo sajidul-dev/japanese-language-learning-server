@@ -8,4 +8,10 @@ export type IUser = {
   password: string;
 };
 
-export type UserModel = Model<IUser, Record<string, unknown>>;
+export type UserModel = {
+  isUserExist(id: string): Promise<Pick<IUser, "email" | "password" | "role">>;
+  isPasswordMatched(
+    givenPassword: string,
+    savedPassword: string,
+  ): Promise<boolean>;
+} & Model<IUser>;
