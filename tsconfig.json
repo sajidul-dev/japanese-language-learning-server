@@ -1,7 +1,18 @@
 {
-  "include": ["src/*"], // which files to compile
-  "exclude": ["node_modules", "dist"], // which files to skip "include": ["src"], // which files to compile
+  "include": [
+    "src/*",
+    "src/**/*.d.ts"
+  ], // which files to compile
+  "exclude": [
+    "node_modules",
+    "dist"
+  ], // which files to skip "include": ["src"], // which files to compile
   "compilerOptions": {
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types",
+      "./src/types/global.d.ts"
+    ],
     "target": "ES2020" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
     "module": "commonjs" /* Specify what module code is generated. */,
     "rootDir": "./src" /* Specify the root folder within your source files. */,
