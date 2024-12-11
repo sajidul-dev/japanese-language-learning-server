@@ -1,8 +1,11 @@
+import { paginationFields } from "./../../../constants/pagination";
 import { Request, RequestHandler, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import { VocabularyServices } from "./vocabulary.service";
+import { vocabularyFilterableFields } from "./vocabulary.constant";
+import pick from "../../../shared/pick";
 
 const createVocabulary: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
@@ -19,7 +22,12 @@ const createVocabulary: RequestHandler = catchAsync(
 
 const getAllVocabulary: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const result = await VocabularyServices.getAllVocabulary();
+    const filters = pick(req.query, vocabularyFilterableFields);
+    const paginationOptions = pick(req.query, paginationFields);
+    const result = await VocabularyServices.getAllVocabulary(
+      filters,
+      paginationOptions,
+    );
 
     sendResponse(res, {
       statusCode: StatusCodes.OK,

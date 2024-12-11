@@ -1,5 +1,10 @@
-import { IVocabulary } from "./vocabulary.interface";
+import { vocabularySearchableFields } from "./vocabulary.constant";
+import { SortOrder } from "mongoose";
+import { paginationHelper } from "./../../../helpers/paginationHelpers";
+import { IPaginationOptions } from "./../../../interfaces/pagination";
+import { IVocabulary, IVocabularyFilters } from "./vocabulary.interface";
 import { Vocabulary } from "./vocabulary.model";
+import { IGenericResponse } from "../../../interfaces/common";
 
 const createVocabulary = async (
   vocabulary: IVocabulary,
@@ -10,12 +15,60 @@ const createVocabulary = async (
   return newVocabulary;
 };
 
-const getAllVocabulary = async (): Promise<IVocabulary[] | null> => {
-  const allVocabulary = await Vocabulary.find({})
-    .sort({ createdAt: -1 })
+const getAllVocabulary = async (
+  filters: IVocabularyFilters,
+  paginationOptions: IPaginationOptions,
+): Promise<IGenericResponse<IVocabulary[] | null>> => {
+  const { searchTerm, ...filtersData } = filters;
+
+  const andConditions = [];
+
+  if (searchTerm) {
+    andConditions.push({
+      $or: vocabularySearchableFields.map(field => ({
+        [field]: {
+          $regex: searchTerm,
+          $options: "i",
+        },
+      })),
+    });
+  }
+
+  if (Object.entries(filtersData).length) {
+    andConditions.push({
+      $and: Object.entries(filtersData).map(([field, value]) => ({
+        [field]: value,
+      })),
+    });
+  }
+  const { page, limit, skip, sortBy, sortOrder } =
+    paginationHelper.calculatePagination(paginationOptions);
+
+  const sortCondition: { [key: string]: SortOrder } = {};
+
+  if (sortBy && sortOrder) {
+    sortCondition[sortBy] = sortOrder;
+  }
+
+  const whereCondition =
+    andConditions.length > 0 ? { $and: andConditions } : {};
+
+  const allVocabulary = await Vocabulary.find(whereCondition)
     .populate("lesson_id")
-    .populate("admin_id");
-  return allVocabulary;
+    .populate("admin_id")
+    .sort(sortCondition)
+    .skip(skip)
+    .limit(limit);
+
+  const total = await Vocabulary.countDocuments(whereCondition);
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: allVocabulary,
+  };
 };
 
 const getSingleVocabulary = async (id: string): Promise<IVocabulary | null> => {

@@ -12,3 +12,8 @@ export type IVocabulary = {
 };
 
 export type VocabularyModel = Model<IVocabulary, Record<string, unknown>>;
+
+export type IVocabularyFilters = {
+  searchTerm?: string;
+  lesson_id?: string;
+};
