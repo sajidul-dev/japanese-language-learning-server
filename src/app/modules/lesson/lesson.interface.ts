@@ -9,3 +9,10 @@ export type ILesson = {
 };
 
 export type LessonModel = Model<ILesson, Record<string, unknown>>;
+
+export type ILessonFilters = {
+  searchTerm?: string;
+  lesson_number?: number;
+  lesson_name?: string;
+  admin_id?: string;
+};

@@ -1,8 +1,11 @@
+import { lessonFilterableFields } from "./lesson.constant";
 import { Request, RequestHandler, Response } from "express";
 import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import { StatusCodes } from "http-status-codes";
 import { LessonService } from "./lesson.service";
+import pick from "../../../shared/pick";
+import { paginationFields } from "../../../constants/pagination";
 
 const createLesson: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
@@ -18,7 +21,9 @@ const createLesson: RequestHandler = catchAsync(
 );
 const getLessons: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const result = await LessonService.getLessons();
+    const filters = pick(req.query, lessonFilterableFields);
+    const paginationOptions = pick(req.query, paginationFields);
+    const result = await LessonService.getLessons(filters, paginationOptions);
 
     sendResponse(res, {
       statusCode: StatusCodes.OK,
