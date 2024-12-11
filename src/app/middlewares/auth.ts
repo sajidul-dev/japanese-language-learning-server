@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { StatusCodes } from "http-status-codes";
 import { NextFunction, Request, Response } from "express";
 import { JwtPayload, Secret } from "jsonwebtoken";

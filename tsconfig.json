@@ -1,12 +1,6 @@
 {
-  "include": [
-    "src/*",
-    "src/**/*.d.ts"
-  ], // which files to compile
-  "exclude": [
-    "node_modules",
-    "dist"
-  ], // which files to skip "include": ["src"], // which files to compile
+  "include": ["src/*", "src/**/*.d.ts"], // which files to compile
+  "exclude": ["node_modules", "dist"], // which files to skip "include": ["src"], // which files to compile
   "compilerOptions": {
     "typeRoots": [
       "./node_modules/@types",
