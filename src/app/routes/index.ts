@@ -1,3 +1,4 @@
+import { TutorialRoutes } from "./../modules/tutorial/tutorial.route";
 import express from "express";
 import { AuthRoutes } from "./../modules/auth/auth.route";
 import { UserRoutes } from "../modules/user/user.route";
@@ -22,6 +23,10 @@ const moduleRoutes = [
   {
     path: "/vocabulary",
     route: VocabularyRoutes,
+  },
+  {
+    path: "/tutorial",
+    route: TutorialRoutes,
   },
 ];
 

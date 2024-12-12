@@ -50,19 +50,13 @@ const getLessons = async (
 
   const whereCondition =
     andConditions.length > 0 ? { $and: andConditions } : {};
-  console.log(JSON.stringify(whereCondition), "Where");
-  let lessons;
-  try {
-    lessons = await Lesson.find(whereCondition)
-      .populate("admin_id")
-      .sort(sortCondition)
-      .skip(skip)
-      .limit(limit);
-    console.log("Lessons found:", lessons);
-  } catch (error) {
-    console.error("Error fetching lessons:", error);
-    throw new Error("Failed to fetch lessons");
-  }
+
+  const lessons = await Lesson.find(whereCondition)
+    .populate("admin_id")
+    .sort(sortCondition)
+    .skip(skip)
+    .limit(limit);
+
   const total = await Lesson.countDocuments(whereCondition);
   return {
     meta: {

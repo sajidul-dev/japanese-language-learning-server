@@ -51,6 +51,12 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   return {
     accessToken,
     refreshToken,
+    user: {
+      name: isUserExist.name,
+      email: isUserExist.email,
+      photo: isUserExist.photo,
+      role: isUserExist.role,
+    },
   };
 };
 

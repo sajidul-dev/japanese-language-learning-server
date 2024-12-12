@@ -4,6 +4,12 @@ export interface ILoginUser {
 }
 export type ILoginUserResponse = {
   accessToken: string;
+  user: {
+    name: string;
+    email: string;
+    photo: string;
+    role: string;
+  };
   refreshToken?: string;
 };
 
