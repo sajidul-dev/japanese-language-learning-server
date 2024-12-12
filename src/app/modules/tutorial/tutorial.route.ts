@@ -31,6 +31,10 @@ router.post(
   auth(ENUM_USER_ROLE.ADMIN),
   TutorialController.createTutorial,
 );
-router.get("/", auth(ENUM_USER_ROLE.ADMIN), TutorialController.getTutorials);
+router.get(
+  "/",
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
+  TutorialController.getTutorials,
+);
 
 export const TutorialRoutes = router;
