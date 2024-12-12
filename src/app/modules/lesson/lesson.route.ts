@@ -15,7 +15,7 @@ router.patch(
 );
 router.get(
   "/:id",
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
   LessonController.getSingleLesson,
 );
 router.delete(
@@ -29,6 +29,10 @@ router.post(
   auth(ENUM_USER_ROLE.ADMIN),
   LessonController.createLesson,
 );
-router.get("/", auth(ENUM_USER_ROLE.ADMIN), LessonController.getLessons);
+router.get(
+  "/",
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
+  LessonController.getLessons,
+);
 
 export const LessonRoutes = router;
