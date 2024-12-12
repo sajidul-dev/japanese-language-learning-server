@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const handleZodError = (error) => {
-    const errors = error.issues.map((issue) => {
+const handleValidationError = (err) => {
+    const errors = Object.values(err.errors).map((el) => {
         return {
-            path: String(issue?.path[issue.path.length - 1]),
-            message: issue?.message,
+            path: el?.path,
+            message: el?.message,
         };
     });
     const statusCode = 400;
@@ -14,4 +14,4 @@ const handleZodError = (error) => {
         errorMessages: errors,
     };
 };
-exports.default = handleZodError;
+exports.default = handleValidationError;

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userRole = void 0;
-/* User validation function */
+exports.userFilterableFields = exports.userSearchableFields = exports.userRole = void 0;
 exports.userRole = ["admin", "user"];
+exports.userSearchableFields = ["name", "email"];
+exports.userFilterableFields = ["searchTerm", "name", "email", "role"];

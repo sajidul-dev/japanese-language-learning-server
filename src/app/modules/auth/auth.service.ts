@@ -16,15 +16,9 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
 
   const isUserExist = await User.isUserExist(email);
 
-  // console.log(isUserExist, "user");
-  // const isUserExist = await User.findOne({ email }).select("password");
-
   if (!isUserExist) {
     throw new ApiError(StatusCodes.NOT_FOUND, "User does not exist");
   }
-
-  // const result = await bcrypt.compare(password, isUserExist.password);
-  // console.log(result, "Password matched");
 
   if (
     isUserExist.password &&

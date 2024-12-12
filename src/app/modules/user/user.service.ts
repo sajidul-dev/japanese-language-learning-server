@@ -18,6 +18,7 @@ const createUser = async (
   const { email } = newUser;
   const { password } = user;
   const loginUser = await AuthService.loginUser({ email, password });
+  console.log(loginUser, "Log from user create");
   return loginUser;
 };
 
